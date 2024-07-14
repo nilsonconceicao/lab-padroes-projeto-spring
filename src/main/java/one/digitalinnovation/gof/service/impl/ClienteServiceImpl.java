@@ -43,7 +43,7 @@ public class ClienteServiceImpl implements ClienteService {
 	public Cliente buscarPorId(Long id) {
 		// Buscar Cliente por ID.
 		Optional<Cliente> cliente = clienteRepository.findById(id);
-		return cliente.get();
+		return cliente.orElse(null);
 	}
 
 	@Override

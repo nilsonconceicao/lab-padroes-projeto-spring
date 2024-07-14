@@ -35,7 +35,12 @@ public class ClienteRestController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
-		return ResponseEntity.ok(clienteService.buscarPorId(id));
+		Cliente cliente = clienteService.buscarPorId(id);
+		if(cliente != null){
+			return ResponseEntity.ok(cliente);
+		}else{
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@PostMapping
@@ -46,13 +51,21 @@ public class ClienteRestController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
-		clienteService.atualizar(id, cliente);
-		return ResponseEntity.ok(cliente);
+		if(clienteService.buscarPorId(id) != null) {
+			clienteService.atualizar(id, cliente);
+			return ResponseEntity.ok(cliente);
+		}else{
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
-		clienteService.deletar(id);
-		return ResponseEntity.ok().build();
+		if(clienteService.buscarPorId(id) != null){
+			clienteService.deletar(id);
+			return ResponseEntity.ok().build();
+		}else{
+			return ResponseEntity.notFound().build();
+		}
 	}
 }
